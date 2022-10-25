@@ -1,3 +1,4 @@
+import 'package:dao_thesis/quiz.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,6 +21,53 @@ class _QuestionaireState extends State<Questionaire> {
     '3',
     '4',
   ];
+  var data = [
+    {
+      'type': 'mcq',
+      'question': 'who?',
+      'answers': [
+        '1',
+        '2',
+        '3',
+        '4',
+      ],
+    },
+    {
+      'type': 'mcq',
+      'question': 'jimbo?',
+      'answers': [
+        '5',
+        '6',
+        '7',
+        '8',
+      ],
+    },
+    {
+      'type': 'frq',
+      'question': 'frq?',
+    }
+  ];
+
+  var _questionIndex = 0;
+
+  var responses = [];
+
+  void _answerQuestion() {
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+      // responses.add(answer);
+    });
+  }
+
+  void _formSubmit() {
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+      displayText = textController.text;
+    });
+  }
+
+  TextEditingController textController = TextEditingController();
+  String displayText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -27,30 +75,22 @@ class _QuestionaireState extends State<Questionaire> {
         appBar: AppBar(
           title: const Text("Questionaire"),
         ),
-        body: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(10),
-              child: const Text(
-                "Hello",
-                style: TextStyle(fontSize: 28),
-                textAlign: TextAlign.center,
-              ), //Text
-            ),
-            for (var item in answers)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                      textStyle: MaterialStateProperty.all(
-                          const TextStyle(color: Colors.white)),
-                      backgroundColor: MaterialStateProperty.all(Colors.green)),
-                  child: Text(item),
-                ),
-              ),
-          ],
-        ));
+        body: Container(
+            child: _questionIndex < data.length
+                ? Quiz(
+                    data: data,
+                    answerQuestion: () => _answerQuestion,
+                    formSubmit: () => _formSubmit,
+                    questionIndex: _questionIndex)
+                : Column(
+                    children: [
+                      for (var response in responses)
+                        Column(
+                          children: [
+                            Text(response),
+                          ],
+                        )
+                    ],
+                  )));
   }
 }
