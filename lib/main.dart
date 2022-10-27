@@ -15,81 +15,90 @@ class Questionaire extends StatefulWidget {
 }
 
 class _QuestionaireState extends State<Questionaire> {
-  var answers = [
-    '1',
-    '2',
-    '3',
-    '4',
-  ];
-  var data = [
-    {
-      'type': 'mcq',
-      'question': 'who?',
-      'answers': [
-        '1',
-        '2',
-        '3',
-        '4',
-      ],
-    },
-    {
-      'type': 'mcq',
-      'question': 'jimbo?',
-      'answers': [
-        '5',
-        '6',
-        '7',
-        '8',
-      ],
-    },
+  final _questions = [
     {
       'type': 'frq',
-      'question': 'frq?',
-    }
+      'question': 'What is your name?',
+    },
+    {
+      'type': 'mcq',
+      'question': 'What is your favorite language?',
+      'answers': [
+        'Java',
+        'Python',
+        'Dart',
+        'English',
+      ],
+    },
+    {
+      'type': 'mcq',
+      'question': 'What season were you born in?',
+      'answers': [
+        'Summer',
+        'Winter',
+        'Spring',
+        'Fall',
+      ],
+    },
   ];
+
+  final data = {
+    "title": "Questionaire",
+    "resultTitle": "Results",
+  };
 
   var _questionIndex = 0;
 
   var responses = [];
 
-  void _answerQuestion() {
+  void _answerQuestion(String answer) {
+    responses.add(answer);
     setState(() {
       _questionIndex = _questionIndex + 1;
-      // responses.add(answer);
     });
   }
 
-  void _formSubmit() {
+  void _formSubmit(String answer) {
     setState(() {
       _questionIndex = _questionIndex + 1;
-      displayText = textController.text;
     });
+    responses.add(answer);
   }
-
-  TextEditingController textController = TextEditingController();
-  String displayText = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Questionaire"),
+          title: Text(data["title"].toString()),
         ),
         body: Container(
-            child: _questionIndex < data.length
+            child: _questionIndex < _questions.length
                 ? Quiz(
-                    data: data,
-                    answerQuestion: () => _answerQuestion,
-                    formSubmit: () => _formSubmit,
+                    questions: _questions,
+                    answerQuestion: _answerQuestion,
+                    formSubmit: _formSubmit,
                     questionIndex: _questionIndex)
                 : Column(
                     children: [
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.all(10),
+                        child: Text(
+                          data["resultTitle"].toString(),
+                          style: const TextStyle(fontSize: 28),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                       for (var response in responses)
-                        Column(
-                          children: [
-                            Text(response),
-                          ],
-                        )
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.all(10),
+                          child: Text(
+                            response,
+                            style: const TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                     ],
                   )));
   }

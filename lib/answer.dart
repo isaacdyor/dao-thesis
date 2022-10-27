@@ -9,16 +9,21 @@ class Answer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: selectHandler(),
-        style: ButtonStyle(
-            textStyle:
-                MaterialStateProperty.all(const TextStyle(color: Colors.white)),
-            backgroundColor: MaterialStateProperty.all(Colors.green)),
-        child: Text(answerText),
-      ),
+    return Column(
+      children: [
+        SizedBox(
+          width: 400,
+          child: ElevatedButton(
+            onPressed: () => selectHandler(answerText),
+            style: ButtonStyle(
+                textStyle: MaterialStateProperty.all(
+                    const TextStyle(color: Colors.white)),
+                backgroundColor: MaterialStateProperty.all(Colors.blue)),
+            child: Text(answerText),
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
     );
   }
 }
